@@ -1,5 +1,5 @@
 import NextLink from 'next/link'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
   AppBar,
   Container,
@@ -10,11 +10,20 @@ import {
   ThemeProvider,
   CssBaseline,
   Switch,
+  Badge,
 } from '@material-ui/core'
 import useStyles from '../utils/styles'
 import { Store } from '../utils/Store'
+import { useCart } from 'react-use-cart'
 
 const Layout = ({ children }) => {
+  const { totalUniqueItems } = useCart()
+
+  const [cartItems, setCartItems] = useState(0)
+  useEffect(() => {
+    setCartItems(totalUniqueItems)
+  }, [totalUniqueItems])
+
   const { state, dispatch } = useContext(Store)
 
   const { darkMode } = state
@@ -64,7 +73,15 @@ const Layout = ({ children }) => {
             <Switch checked={darkMode} onChange={tiggleDarkMode} />
 
             <NextLink href="/cart" passHref>
-              <Link>Cart</Link>
+              <Link>
+                {cartItems > 0 ? (
+                  <Badge badgeContent={cartItems} color="primary">
+                    Cart
+                  </Badge>
+                ) : (
+                  'Cart'
+                )}
+              </Link>
             </NextLink>
             <NextLink href="/login" passHref>
               <Link>login</Link>
