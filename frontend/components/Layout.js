@@ -11,12 +11,17 @@ import {
   CssBaseline,
   Switch,
   Badge,
+  Button,
 } from '@material-ui/core'
 import useStyles from '../utils/styles'
 import { Store } from '../utils/Store'
 import { useCart } from 'react-use-cart'
+import UserContext from '../context/user/UserContext'
 
 const Layout = ({ children }) => {
+  const uContext = useContext(UserContext)
+  const { user } = uContext
+
   const { totalUniqueItems } = useCart()
 
   const [cartItems, setCartItems] = useState(0)
@@ -83,9 +88,13 @@ const Layout = ({ children }) => {
                 )}
               </Link>
             </NextLink>
-            <NextLink href="/login" passHref>
-              <Link>login</Link>
-            </NextLink>
+            {user ? (
+              <Button className={classes.navbarButton}>{user.name}</Button>
+            ) : (
+              <NextLink href="/login" passHref>
+                <Link>login</Link>
+              </NextLink>
+            )}
           </div>
         </Toolbar>
       </AppBar>

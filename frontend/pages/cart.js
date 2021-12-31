@@ -19,10 +19,13 @@ import {
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import { useCart } from 'react-use-cart'
 import Meta from '../components/Meta'
 
 const CartScreen = () => {
+  const router = useRouter()
+
   const {
     items: cartItems,
     isEmpty,
@@ -58,12 +61,24 @@ const CartScreen = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Image</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Price</TableCell>
-                    <TableCell align="right">Total</TableCell>
-                    <TableCell align="right">Remove</TableCell>
+                    <TableCell>
+                      <strong>Image</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Name</strong>
+                    </TableCell>
+                    <TableCell align="right">
+                      <strong>Quantity</strong>
+                    </TableCell>
+                    <TableCell align="right">
+                      <strong>Price</strong>
+                    </TableCell>
+                    <TableCell align="right">
+                      <strong>Total</strong>
+                    </TableCell>
+                    <TableCell align="right">
+                      <strong>Remove</strong>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -75,8 +90,9 @@ const CartScreen = () => {
                             <Image
                               src={item.image}
                               alt={item.name}
-                              width={50}
-                              height={50}
+                              layout="responsive"
+                              width="100%"
+                              height="100%"
                             />
                           </Link>
                         </NextLink>
@@ -84,7 +100,7 @@ const CartScreen = () => {
                       <TableCell>
                         <NextLink href={`/product/${item._id}`} passHref>
                           <Link>
-                            <Typography color="secondary">
+                            <Typography variant="h6" color="primary">
                               {item.name}
                             </Typography>
                           </Link>
@@ -108,7 +124,7 @@ const CartScreen = () => {
                       <TableCell align="right">
                         <Button
                           variant="contained"
-                          style={{ backgroundColor: '#ff860a' }}
+                          style={{ backgroundColor: '#ff5e39' }}
                           color="inherit"
                           onClick={() => removeItem(item.id)}>
                           x
@@ -129,7 +145,11 @@ const CartScreen = () => {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  <Button fullWidth variant="contained">
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={() => router.push('/shipping')}>
                     Checkout
                   </Button>
                 </ListItem>
@@ -145,7 +165,7 @@ const CartScreen = () => {
             <Box textAlign="center" my={3}>
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 onClick={() => emptyCart()}>
                 Empty Cart
               </Button>

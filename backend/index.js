@@ -3,6 +3,12 @@ import express from 'express'
 import 'dotenv/config'
 import connectDB from './config/db.js'
 connectDB()
+import cors from 'cors'
+const corsOptions = {
+  origin: '*',
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+}
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
@@ -14,6 +20,8 @@ import orderRoutes from './routes/orderRoutes.js'
 const app = express()
 
 app.use(express.json())
+
+app.use(cors(corsOptions))
 
 app.use('/api/products', productRoutes)
 app.use('/api/category', categoryRoutes)

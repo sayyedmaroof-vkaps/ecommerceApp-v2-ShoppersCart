@@ -78,7 +78,7 @@ const ProductDetails = ({ product }) => {
                 <Button
                   fullWidth
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   onClick={() => {
                     let item = {
                       ...product,

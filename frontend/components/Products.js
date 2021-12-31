@@ -39,7 +39,7 @@ const Products = ({ products }) => {
                 <Typography>${product.price}</Typography>
                 <Button
                   size="small"
-                  color="primary"
+                  color="secondary"
                   onClick={() => {
                     let item = {
                       ...product,
@@ -56,7 +56,7 @@ const Products = ({ products }) => {
                     addItem(item, 1)
                     router.push('/cart')
                   }}>
-                  Add To Cart
+                  <strong>Add To Cart</strong>
                 </Button>
               </CardActions>
             </Card>
