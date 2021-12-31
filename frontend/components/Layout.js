@@ -6,7 +6,7 @@ import {
   Toolbar,
   Typography,
   Link,
-  createTheme,
+  unstable_createMuiStrictModeTheme as createMuiTheme,
   ThemeProvider,
   CssBaseline,
   Switch,
@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
 
   const classes = useStyles()
 
-  const theme = createTheme({
+  const theme = createMuiTheme({
     typography: {
       h1: {
         fontSize: '1.6rem',
@@ -46,10 +46,10 @@ const Layout = ({ children }) => {
     palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
-        main: '#f0c000',
+        main: '#2874f0',
       },
       secondary: {
-        main: '#208080',
+        main: '#fb641b',
       },
     },
   })
@@ -75,7 +75,7 @@ const Layout = ({ children }) => {
             <NextLink href="/cart" passHref>
               <Link>
                 {cartItems > 0 ? (
-                  <Badge badgeContent={cartItems} color="primary">
+                  <Badge badgeContent={cartItems} color="secondary">
                     Cart
                   </Badge>
                 ) : (
@@ -91,7 +91,7 @@ const Layout = ({ children }) => {
       </AppBar>
       <Container className={classes.main}>{children}</Container>
       <footer className={classes.footer}>
-        <Typography> Copyright &copy; NotesInfinity </Typography>
+        <Typography> Copyright &copy; ShoppersCart </Typography>
       </footer>
     </ThemeProvider>
   )
