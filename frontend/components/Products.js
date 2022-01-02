@@ -11,8 +11,11 @@ import {
 } from '@material-ui/core'
 import { useCart } from 'react-use-cart'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 
 const Products = ({ products }) => {
+  const { enqueueSnackbar } = useSnackbar()
+
   const router = useRouter()
   const { addItem, items: cartItems } = useCart()
 
@@ -54,6 +57,10 @@ const Products = ({ products }) => {
                       return
                     }
                     addItem(item, 1)
+                    enqueueSnackbar('Product added to cart', {
+                      variant: 'info',
+                      anchorOrigin: { vertical: 'bottom', horizontal: 'left' },
+                    })
                     router.push('/cart')
                   }}>
                   <strong>Add To Cart</strong>

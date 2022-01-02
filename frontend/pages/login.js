@@ -1,7 +1,6 @@
 import Meta from '../components/Meta'
 import NextLink from 'next/link'
 import {
-  Box,
   Button,
   Grid,
   Link,
@@ -12,10 +11,21 @@ import {
 } from '@material-ui/core'
 import useStyles from '../utils/styles'
 import UserContext from '../context/user/UserContext'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { Controller, useForm } from 'react-hook-form'
 
 const Login = () => {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm()
+
+  useEffect(() => {
+    if (user) router.push('/')
+  }, [])
+
   const router = useRouter()
   const { redirect } = router.query // login?redirect=shipping
 
@@ -23,59 +33,81 @@ const Login = () => {
   const uContext = useContext(UserContext)
   const { login, user } = uContext
 
-  const [credentials, setCredentials] = useState({ email: '', password: '' })
-
-  const handleChange = e => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value })
-  }
-
-  const handleLogin = async e => {
-    e.preventDefault()
-    console.log(redirect)
-    const isSuccess = await login(credentials.email, credentials.password)
+  const handleLogin = async ({ email, password }) => {
+    // e.preventDefault()
+    const isSuccess = await login(email, password)
     if (isSuccess) router.push(redirect || '/')
   }
-  useEffect(() => {
-    if (user) router.push('/')
-  }, [])
 
   const classes = useStyles()
   return (
     <>
       <Meta title="Login" />
-      <form className={classes.form} onSubmit={handleLogin}>
+      <form className={classes.form} onSubmit={handleSubmit(handleLogin)}>
         <Typography component="h1" variant="h1">
           Login
         </Typography>
         <List>
           <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              size="small"
-              id="email"
-              label="email"
+            <Controller
               name="email"
-              onChange={handleChange}
-              inputProps={{ type: 'email' }}></TextField>
+              control={control}
+              defaultValue=""
+              rules={{
+                required: true,
+                pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+              }}
+              render={({ field }) => (
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  name="email"
+                  inputProps={{ type: 'email' }}
+                  error={Boolean(errors.email)}
+                  helperText={
+                    errors.email
+                      ? errors.email.type === 'pattern'
+                        ? 'Email is not valid'
+                        : 'Email is required'
+                      : ''
+                  }
+                  {...field}></TextField>
+              )}></Controller>
           </ListItem>
           <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              size="small"
-              id="password"
-              label="password"
+            <Controller
               name="password"
-              onChange={handleChange}
-              inputProps={{ type: 'password' }}></TextField>
+              control={control}
+              defaultValue=""
+              rules={{
+                required: true,
+                minLength: 6,
+              }}
+              render={({ field }) => (
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="password"
+                  label="Password"
+                  inputProps={{ type: 'password' }}
+                  error={Boolean(errors.password)}
+                  helperText={
+                    errors.password
+                      ? errors.password.type === 'minLength'
+                        ? 'Password length is more than 5'
+                        : 'Password is required'
+                      : ''
+                  }
+                  {...field}></TextField>
+              )}></Controller>
           </ListItem>
           <ListItem>
             <Button
               variant="contained"
               type="submit"
               fullWidth
-              //   size="small"
               color="secondary">
               Login
             </Button>
@@ -84,7 +116,9 @@ const Login = () => {
             <Grid item>
               <Typography>
                 Don't have an account?
-                <NextLink href="/signup" variant="body2" passHref>
+                <NextLink
+                  href={`/register?redirect=${redirect || '/'}`}
+                  passHref>
                   <Link> Register</Link>
                 </NextLink>
               </Typography>

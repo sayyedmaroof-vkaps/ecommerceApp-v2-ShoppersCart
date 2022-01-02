@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 // import { useNavigate } from 'react-router-dom'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 
 // Function for cleaning null, undefined and empty strings values in objects
 function clean(obj) {
@@ -19,9 +20,9 @@ function clean(obj) {
 }
 
 const UserState = props => {
-  //fort navigate
+  const { enqueueSnackbar } = useSnackbar()
+
   const router = useRouter()
-  // const navigate = useNavigate()
 
   // axios config
   // const userToken = JSON.parse(localStorage.getItem('userToken'))
@@ -30,9 +31,7 @@ const UserState = props => {
   // }
 
   const [user, setUser] = useState(null)
-  const [userError, setUserError] = useState(null)
   const [userLoading, setUserLoading] = useState(false)
-  const [userMessage, setUserMessage] = useState(null)
   const [allUsers, setAllUsers] = useState([])
 
   useEffect(() => {
@@ -40,33 +39,22 @@ const UserState = props => {
     setUser(userInfo)
   }, [])
 
-  //   for disabling the alert messages after 3 seconds
-  useEffect(() => {
-    setTimeout(() => {
-      setUserMessage(null)
-      setUserError(null)
-    }, 3000)
-  }, [userMessage, userError])
-
   // Error handler funtion
   const errorHandler = (err, info) => {
     if (info === undefined || null) {
       info = ''
     }
     if (err.response) {
-      setUserError({
-        variant: 'danger',
-        message: `${info} ${err.response.data.error}`,
+      enqueueSnackbar(`${info} ${err.response.data.error}`, {
+        variant: 'error',
       })
     } else if (err.request) {
-      setUserError({
-        variant: 'danger',
-        message: `${info} No response from server`,
+      enqueueSnackbar(`${info} No response from server`, {
+        variant: 'error',
       })
     } else {
-      setUserError({ variant: 'danger', message: err.message })
+      enqueueSnackbar(err.message, { variant: 'error' })
     }
-    // setUserLoading(false)
   }
 
   // -----------------------------------------------------------------
@@ -74,8 +62,6 @@ const UserState = props => {
   // -----------------------------------------------------------------
   const login = async (email, password) => {
     try {
-      // setUserLoading(true)
-
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login`,
         {
@@ -86,15 +72,9 @@ const UserState = props => {
       localStorage.setItem('userInfo', JSON.stringify(data.user))
       localStorage.setItem('userToken', JSON.stringify(data.token))
       setUser(data.user)
+      enqueueSnackbar('Logged in successfully', { variant: 'success' })
       return true
-      // alert('Logged in successfully')
-      // router.push('/') redirection from different pages will be awesome
-      // setUserError(null)
-      // setUserLoading(false)
-      // setUserMessage({ variant: 'success', message: 'Logged In successfully' })
-      //   history.push('/')
     } catch (err) {
-      alert(err.response ? err.response.data.error : err.message)
       errorHandler(err)
       return false
     }
@@ -106,15 +86,15 @@ const UserState = props => {
   const signup = async (name, email, password) => {
     try {
       const body = clean({ name, email, password })
-      setUserLoading(true)
-      const { data } = await axios.post(`api/users/register`, body)
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/register`,
+        body
+      )
       localStorage.setItem('userInfo', JSON.stringify(data.user))
       localStorage.setItem('userToken', JSON.stringify(data.token))
       setUser(data.user)
-      setUserError(null)
-      setUserLoading(false)
-      setUserMessage({ variant: 'success', message: 'Signed up successfully' })
-      navigate('/')
+      enqueueSnackbar('user registered successfully!', { variant: 'success' })
+      return true
     } catch (err) {
       errorHandler(err)
     }
@@ -125,18 +105,13 @@ const UserState = props => {
   // -----------------------------------------------------------------
   const logout = async () => {
     try {
-      setUserLoading(true)
-      // await axios.post(`api/users/logout`, null, {
-      //   headers,
-      // })
       localStorage.removeItem('userInfo')
       localStorage.removeItem('userToken')
       localStorage.removeItem('react-use-cart')
       setUser(null)
-      setUserError(null)
       setUserLoading(false)
-      setUserMessage({ variant: 'dark', message: 'You have logged out!' })
-      navigate('/login')
+      enqueueSnackbar('User logged out')
+      router.push('/')
     } catch (err) {
       errorHandler(err)
     }
@@ -216,9 +191,7 @@ const UserState = props => {
     <UserContext.Provider
       value={{
         user,
-        userError,
         userLoading,
-        userMessage,
         allUsers,
         login,
         signup,

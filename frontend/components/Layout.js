@@ -12,17 +12,22 @@ import {
   Switch,
   Badge,
   Button,
+  Menu,
+  MenuItem,
 } from '@material-ui/core'
 import useStyles from '../utils/styles'
 import { Store } from '../utils/Store'
 import { useCart } from 'react-use-cart'
 import UserContext from '../context/user/UserContext'
+import { useRouter } from 'next/router'
 
 const Layout = ({ children }) => {
-  const uContext = useContext(UserContext)
-  const { user } = uContext
+  const router = useRouter()
 
-  const { totalUniqueItems } = useCart()
+  const uContext = useContext(UserContext)
+  const { user, logout } = uContext
+
+  const { totalUniqueItems, emptyCart } = useCart()
 
   const [cartItems, setCartItems] = useState(0)
   useEffect(() => {
@@ -59,6 +64,19 @@ const Layout = ({ children }) => {
     },
   })
 
+  const [anchorEl, setAnchorEl] = useState(null)
+  const loginClickHandler = e => {
+    setAnchorEl(e.currentTarget)
+  }
+  const loginMenuCloseHandler = () => {
+    setAnchorEl(null)
+  }
+  const logoutClickHandler = () => {
+    setAnchorEl(null)
+    logout()
+    emptyCart()
+  }
+
   const tiggleDarkMode = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' })
   }
@@ -89,7 +107,29 @@ const Layout = ({ children }) => {
               </Link>
             </NextLink>
             {user ? (
-              <Button className={classes.navbarButton}>{user.name}</Button>
+              <>
+                <>
+                  <Button
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={loginClickHandler}
+                    className={classes.navbarButton}>
+                    {user.name}
+                  </Button>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={loginMenuCloseHandler}>
+                    <MenuItem onClick={loginMenuCloseHandler}>Profile</MenuItem>
+                    <MenuItem onClick={loginMenuCloseHandler}>
+                      My account
+                    </MenuItem>
+                    <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+                  </Menu>
+                </>
+              </>
             ) : (
               <NextLink href="/login" passHref>
                 <Link>login</Link>
