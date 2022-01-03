@@ -4,8 +4,10 @@ import '../styles/globals.css'
 import { StoreProvider } from '../utils/Store'
 import { CartProvider } from 'react-use-cart'
 import UserState from '../context/user/UserState'
+import OrderState from '../context/orders/OrderState'
 import { SnackbarProvider } from 'notistack'
 import { Zoom } from '@material-ui/core'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -26,9 +28,13 @@ function MyApp({ Component, pageProps }) {
       <StoreProvider>
         <UserState>
           <CartProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <OrderState>
+              <Layout>
+                <PayPalScriptProvider deferLoading={true}>
+                  <Component {...pageProps} />
+                </PayPalScriptProvider>
+              </Layout>
+            </OrderState>
           </CartProvider>
         </UserState>
       </StoreProvider>

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import OrderContext from './orderContext'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 import { useCart } from 'react-use-cart'
+import { useSnackbar } from 'notistack'
+import { useRouter } from 'next/router'
 
 // Function for cleaning null, undefined and empty strings values in objects
 function clean(obj) {
@@ -21,38 +22,32 @@ function clean(obj) {
 // ------------------------------------------
 // Orders State
 // ------------------------------------------
-const OdersState = props => {
-  const navigate = useNavigate()
-
+const OrderState = props => {
+  const { enqueueSnackbar } = useSnackbar()
+  const router = useRouter()
   const { emptyCart } = useCart()
 
   const [orders, setOrders] = useState([])
   const [ordersError, setOrdersError] = useState(null)
-  const [ordersLoading, setOrdersLoading] = useState(false)
+  const [ordersLoading, setOrdersLoading] = useState(null)
   const [ordersMessage, setOrdersMessage] = useState(null)
   const [myOrders, setMyOrders] = useState([])
 
-  useEffect(() => {
-    setTimeout(() => {
-      setOrdersError(null)
-      setOrdersMessage(null)
-    }, 3000)
-  }, [ordersError, ordersMessage])
-
-  // Error Handler function
+  // Error handler funtion
   const errorHandler = (err, info) => {
+    if (info === undefined || null) {
+      info = ''
+    }
     if (err.response) {
-      setOrdersError({
-        variant: 'danger',
-        message: `${info}, ${err.response.data.error}`,
+      enqueueSnackbar(`${info} ${err.response.data.error}`, {
+        variant: 'error',
       })
     } else if (err.request) {
-      setOrdersError({
-        variant: 'danger',
-        message: `${info},  No response from server!`,
+      enqueueSnackbar(`${info} No response from server`, {
+        variant: 'error',
       })
     } else {
-      setOrdersError({ variant: 'danger', message: err.message })
+      enqueueSnackbar(err.message, { variant: 'error' })
     }
     setOrdersLoading(false)
   }
@@ -64,15 +59,20 @@ const OdersState = props => {
     orderItems,
     shippingAddress,
     paymentMethod,
-    totalPrice,
-    paymentResult
+    itemsPrice,
+    shippingPrice,
+    taxPrice,
+    totalPrice
+    // paymentResult
   ) => {
     const orderBody = clean({
       orderItems,
       shippingAddress,
       paymentMethod,
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
       totalPrice,
-      paymentResult,
     })
     try {
       const userToken = JSON.parse(localStorage.getItem('userToken'))
@@ -80,17 +80,20 @@ const OdersState = props => {
         Authorization: `Bearer ${userToken && userToken}`,
       }
       setOrdersLoading(true)
-      await axios.post('api/orders/new', orderBody, { headers })
-      // localStorage.removeItem('react-use-cart')
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/new`,
+        orderBody,
+        {
+          headers,
+        }
+      )
       emptyCart()
-      navigate('/thankYou')
-      // setProducts([...products, productBody])
+      router.push(`/order/${data.order._id}`)
       setOrdersMessage({
         variant: 'success',
         message: 'Order placed successfully!',
       })
       setOrdersLoading(false)
-      setOrdersError(null)
     } catch (err) {
       errorHandler(err)
     }
@@ -144,11 +147,13 @@ const OdersState = props => {
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      const { data } = await axios.get(`/api/orders/myOrders/${id}`, {
-        headers,
-      })
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/myOrders/${id}`,
+        {
+          headers,
+        }
+      )
       setOrdersLoading(false)
-      setOrdersError(null)
       return data.order
     } catch (err) {
       errorHandler(err)
@@ -195,4 +200,4 @@ const OdersState = props => {
   )
 }
 
-export default OdersState
+export default OrderState

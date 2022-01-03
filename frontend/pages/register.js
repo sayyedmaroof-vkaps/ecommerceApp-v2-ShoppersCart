@@ -64,9 +64,9 @@ const Register = () => {
                 <TextField
                   variant="outlined"
                   fullWidth
-                  id="email"
+                  id="name"
                   label="Name"
-                  name="email"
+                  name="name"
                   inputProps={{ type: 'name' }}
                   error={Boolean(errors.name)}
                   helperText={

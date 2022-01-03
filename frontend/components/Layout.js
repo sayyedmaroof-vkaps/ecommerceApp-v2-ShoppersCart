@@ -6,7 +6,7 @@ import {
   Toolbar,
   Typography,
   Link,
-  unstable_createMuiStrictModeTheme as createMuiTheme,
+  createTheme,
   ThemeProvider,
   CssBaseline,
   Switch,
@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
 
   const classes = useStyles()
 
-  const theme = createMuiTheme({
+  const theme = createTheme({
     typography: {
       h1: {
         fontSize: '1.6rem',

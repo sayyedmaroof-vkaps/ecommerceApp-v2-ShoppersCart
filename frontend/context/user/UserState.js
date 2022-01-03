@@ -1,5 +1,5 @@
 import UserContext from './UserContext'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 // import { useNavigate } from 'react-router-dom'
 import { useRouter } from 'next/router'
@@ -30,14 +30,17 @@ const UserState = props => {
   //   Authorization: `Bearer ${userToken || ''}`,
   // }
 
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(
+    typeof window !== 'undefined' &&
+      JSON.parse(localStorage.getItem('userInfo'))
+  )
   const [userLoading, setUserLoading] = useState(false)
   const [allUsers, setAllUsers] = useState([])
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    setUser(userInfo)
-  }, [])
+  // useEffect(() => {
+  //   const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+  //   setUser(userInfo)
+  // }, [])
 
   // Error handler funtion
   const errorHandler = (err, info) => {
@@ -55,6 +58,7 @@ const UserState = props => {
     } else {
       enqueueSnackbar(err.message, { variant: 'error' })
     }
+    setUserLoading(false)
   }
 
   // -----------------------------------------------------------------
@@ -108,6 +112,7 @@ const UserState = props => {
       localStorage.removeItem('userInfo')
       localStorage.removeItem('userToken')
       localStorage.removeItem('react-use-cart')
+      localStorage.removeItem('shoppersCart-shippingAddress')
       setUser(null)
       setUserLoading(false)
       enqueueSnackbar('User logged out')
