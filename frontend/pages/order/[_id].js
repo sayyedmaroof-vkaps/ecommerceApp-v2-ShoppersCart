@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Store } from '../../utils/Store'
 import NextLink from 'next/link'
@@ -22,16 +22,36 @@ import {
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import useStyles from '../../utils/styles'
-import CheckoutWizard from '../../components/CheckoutWizard'
 import { useSnackbar } from 'notistack'
 import Meta from '../../components/Meta'
 import UserContext from '../../context/user/UserContext'
 import OrderContext from '../../context/orders/orderContext'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 
+function reducer(state, action) {
+  switch (action.type) {
+    // case 'FETCH_REQUEST':
+    //   return { ...state, loading: true, error: '' };
+    // case 'FETCH_SUCCESS':
+    //   return { ...state, loading: false, order: action.payload, error: '' };
+    // case 'FETCH_FAIL':
+    //   return { ...state, loading: false, error: action.payload };
+    case 'PAY_REQUEST':
+      return { ...state, loadingPay: true }
+    case 'PAY_SUCCESS':
+      return { ...state, loadingPay: false, successPay: true }
+    case 'PAY_FAIL':
+      return { ...state, loadingPay: false, errorPay: action.payload }
+    case 'PAY_RESET':
+      return { ...state, loadingPay: false, successPay: false, errorPay: '' }
+    default:
+      state
+  }
+}
+
 function Order({ params }) {
   const orderId = params._id
-
+  const { enqueueSnackbar } = useSnackbar()
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
 
   const classes = useStyles()
@@ -46,6 +66,28 @@ function Order({ params }) {
   const oContext = useContext(OrderContext)
   const { getOneOrder, ordersLoading } = oContext
 
+  const [{ loading, error, successPay }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: '',
+  })
+
+  const errorHandler = (err, info) => {
+    if (info === undefined || null) {
+      info = ''
+    }
+    if (err.response) {
+      enqueueSnackbar(`${info} ${err.response.data.error}`, {
+        variant: 'error',
+      })
+    } else if (err.request) {
+      enqueueSnackbar(`${info} No response from server`, {
+        variant: 'error',
+      })
+    } else {
+      enqueueSnackbar(err.message, { variant: 'error' })
+    }
+  }
+
   useEffect(() => {
     if (!user) {
       return router.push('/login')
@@ -54,8 +96,9 @@ function Order({ params }) {
       const result = await getOneOrder(orderId)
       setOrder(result)
     }
-    if (!order._id || (order._id && order._id !== orderId)) {
+    if (!order._id || successPay || (order._id && order._id !== orderId)) {
       fetchOrder()
+      if (successPay) dispatch({ type: 'PAY_RESET' })
     } else {
       const loadPaypalScript = async () => {
         const { data: clientId } = await axios.get(
@@ -70,16 +113,16 @@ function Order({ params }) {
         })
         paypalDispatch({ type: 'setLoadingStatus', value: 'pending' })
       }
+      loadPaypalScript()
     }
-  }, [order])
+  }, [order, successPay])
 
-  const { closeSnackbar, enqueueSnackbar } = useSnackbar()
   function createOrder(data, actions) {
     return actions.order
       .create({
         purchase_units: [
           {
-            amount: { value: totalPrice },
+            amount: { value: order.totalPrice },
           },
         ],
       })
@@ -91,30 +134,33 @@ function Order({ params }) {
     return actions.order.capture().then(async function (details) {
       try {
         dispatch({ type: 'PAY_REQUEST' })
-        const { data } = await axios.put(
-          `/api/orders/${order._id}/pay`,
+        const userToken = JSON.parse(localStorage.getItem('userToken'))
+        const headers = {
+          Authorization: `Bearer ${userToken && userToken}`,
+        }
+        const { data } = await axios.patch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${order._id}/pay`,
           details,
           {
-            headers: { authorization: `Bearer ${userInfo.token}` },
+            headers,
           }
         )
         dispatch({ type: 'PAY_SUCCESS', payload: data })
         enqueueSnackbar('Order is paid', { variant: 'success' })
       } catch (err) {
         dispatch({ type: 'PAY_FAIL', payload: getError(err) })
-        enqueueSnackbar(getError(err), { variant: 'error' })
+        errorHandler(err)
       }
     })
   }
 
   function onError(err) {
-    enqueueSnackbar(getError(err), { variant: 'error' })
+    errorHandler(err)
   }
 
   return (
     <>
       <Meta title={`Order ${orderId}`} />
-      <CheckoutWizard activeStep={3}></CheckoutWizard>
       <Typography component="h1" variant="h1">
         Order: {orderId}
       </Typography>

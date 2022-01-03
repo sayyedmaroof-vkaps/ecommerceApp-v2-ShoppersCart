@@ -13,6 +13,34 @@ export const placeOrder = async (req, res) => {
   }
 }
 
+// @desc Payment Update
+// @route PATCH '/api/orders/:id/pay'
+// @access Private : User
+export const payOrder = async (req, res) => {
+  try {
+    const order = await Order.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+    }).populate('user', 'name email')
+    if (!order) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'Could not find order!' })
+    }
+    order.isPaid = true
+    order.paidAt = Date.now()
+    order.paymentResult = {
+      id: req.body.id,
+      status: req.body.status,
+      email_address: req.body.email_address,
+    }
+    await order.save()
+    res.send({ success: true, message: 'Order Payment successful', order })
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message })
+  }
+}
+
 // @desc Get all orders
 // @route GET '/api/orders/all'
 // @access Private : Admin

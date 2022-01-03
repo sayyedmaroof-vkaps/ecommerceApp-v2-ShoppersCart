@@ -34,6 +34,11 @@ const orderSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    paymentResult: {
+      id: { type: String },
+      status: { type: String },
+      email_address: { type: String },
+    },
     itemsPrice: {
       type: Number,
       required: true,
