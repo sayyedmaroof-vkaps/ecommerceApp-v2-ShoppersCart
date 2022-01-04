@@ -106,10 +106,12 @@ const OrderState = props => {
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      const { data } = await axios.get('/api/orders/getAll', { headers })
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/getAll`,
+        { headers }
+      )
       setOrders(data.orders)
       setOrdersLoading(false)
-      setOrdersError(null)
     } catch (err) {
       errorHandler(err)
     }

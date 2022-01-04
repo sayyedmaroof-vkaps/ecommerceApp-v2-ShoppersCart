@@ -132,6 +132,12 @@ const Layout = ({ children }) => {
                       onClick={e => loginMenuCloseHandler(e, '/order-history')}>
                       Order History
                     </MenuItem>
+                    {user.role === 'admin' && (
+                      <MenuItem
+                        onClick={e => loginMenuCloseHandler(e, '/admin')}>
+                        Admin Dashboard
+                      </MenuItem>
+                    )}
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>
                 </>
