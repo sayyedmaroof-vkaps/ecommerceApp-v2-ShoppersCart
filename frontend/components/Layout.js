@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
   const uContext = useContext(UserContext)
   const { user, logout } = uContext
 
-  const { totalUniqueItems, emptyCart } = useCart()
+  const { totalUniqueItems } = useCart()
 
   const [cartItems, setCartItems] = useState(0)
   useEffect(() => {
@@ -68,13 +68,15 @@ const Layout = ({ children }) => {
   const loginClickHandler = e => {
     setAnchorEl(e.currentTarget)
   }
-  const loginMenuCloseHandler = () => {
+  const loginMenuCloseHandler = (e, redirect) => {
     setAnchorEl(null)
+    if (redirect) {
+      router.push(redirect)
+    }
   }
   const logoutClickHandler = () => {
     setAnchorEl(null)
     logout()
-    emptyCart()
   }
 
   const tiggleDarkMode = () => {
@@ -122,9 +124,13 @@ const Layout = ({ children }) => {
                     keepMounted
                     open={Boolean(anchorEl)}
                     onClose={loginMenuCloseHandler}>
-                    <MenuItem onClick={loginMenuCloseHandler}>Profile</MenuItem>
-                    <MenuItem onClick={loginMenuCloseHandler}>
-                      My account
+                    <MenuItem
+                      onClick={e => loginMenuCloseHandler(e, '/profile')}>
+                      Profile
+                    </MenuItem>
+                    <MenuItem
+                      onClick={e => loginMenuCloseHandler(e, '/order-history')}>
+                      Order History
                     </MenuItem>
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>

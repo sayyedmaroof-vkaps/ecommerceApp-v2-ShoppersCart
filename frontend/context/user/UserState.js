@@ -4,6 +4,7 @@ import axios from 'axios'
 // import { useNavigate } from 'react-router-dom'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
+import { useCart } from 'react-use-cart'
 
 // Function for cleaning null, undefined and empty strings values in objects
 function clean(obj) {
@@ -22,13 +23,17 @@ function clean(obj) {
 const UserState = props => {
   const { enqueueSnackbar } = useSnackbar()
 
+  const { emptyCart } = useCart()
+
   const router = useRouter()
 
   // axios config
-  // const userToken = JSON.parse(localStorage.getItem('userToken'))
-  // const headers = {
-  //   Authorization: `Bearer ${userToken || ''}`,
-  // }
+  const userToken =
+    typeof window !== 'undefined' &&
+    JSON.parse(localStorage.getItem('userToken'))
+  const headers = {
+    Authorization: `Bearer ${userToken || ''}`,
+  }
 
   const [user, setUser] = useState(
     typeof window !== 'undefined' &&
@@ -113,6 +118,8 @@ const UserState = props => {
       localStorage.removeItem('userToken')
       localStorage.removeItem('react-use-cart')
       localStorage.removeItem('shoppersCart-shippingAddress')
+      localStorage.removeItem('shoppersCart-paymentMethod')
+      emptyCart
       setUser(null)
       setUserLoading(false)
       enqueueSnackbar('User logged out')
@@ -140,19 +147,19 @@ const UserState = props => {
   // -----------------------------------------------------------------
   // Edit Profile
   // -----------------------------------------------------------------
-  const editProfile = async (name, email) => {
+  const editProfile = async (name, email, password) => {
     try {
       setUserLoading(true)
-      const body = clean({ name, email })
-      const { data } = await axios.patch('api/users/profile', body, { headers })
+      const body = clean({ name, email, password })
+      const { data } = await axios.patch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/profile`,
+        body,
+        { headers }
+      )
       setUser(data.user)
       localStorage.setItem('userInfo', JSON.stringify(data.user))
-      setUserError(null)
       setUserLoading(false)
-      setUserMessage({
-        variant: 'success',
-        message: 'Your profile was updated successfully',
-      })
+      enqueueSnackbar('Profile updated successfully', { variant: 'success' })
       return data
     } catch (err) {
       errorHandler(err, 'Could not update your profile!')

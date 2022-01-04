@@ -27,6 +27,7 @@ const useStyles = makeStyles({
   form: {
     maxWidth: 600,
     margin: '0 auto',
+    width: '100%',
   },
   navbarButton: {
     color: '#fff',

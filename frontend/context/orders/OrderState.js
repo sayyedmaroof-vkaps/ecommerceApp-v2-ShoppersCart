@@ -89,10 +89,7 @@ const OrderState = props => {
       )
       emptyCart()
       router.push(`/order/${data.order._id}`)
-      setOrdersMessage({
-        variant: 'success',
-        message: 'Order placed successfully!',
-      })
+      enqueueSnackbar('Order Placed Successfully', { variant: 'success' })
       setOrdersLoading(false)
     } catch (err) {
       errorHandler(err)
@@ -128,7 +125,10 @@ const OrderState = props => {
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      const { data } = await axios.get('/api/orders/myOrders', { headers })
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/myOrders`,
+        { headers }
+      )
       setMyOrders(data.myOrders)
       setOrdersLoading(false)
       setOrdersError(null)

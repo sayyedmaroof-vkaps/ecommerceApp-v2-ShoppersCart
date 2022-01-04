@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { Store } from '../../utils/Store'
 import NextLink from 'next/link'
 import Image from 'next/image'
 import {
@@ -14,7 +13,6 @@ import {
   TableCell,
   Link,
   CircularProgress,
-  Button,
   Card,
   List,
   ListItem,
@@ -146,7 +144,7 @@ function Order({ params }) {
           }
         )
         dispatch({ type: 'PAY_SUCCESS', payload: data })
-        enqueueSnackbar('Order is paid', { variant: 'success' })
+        enqueueSnackbar('Order Payment Successful', { variant: 'success' })
       } catch (err) {
         dispatch({ type: 'PAY_FAIL', payload: getError(err) })
         errorHandler(err)
@@ -185,7 +183,9 @@ function Order({ params }) {
                 <ListItem>
                   Status:{' '}
                   {order.isDelivered
-                    ? `delivered at ${order.deliveredAt}`
+                    ? `delivered at ${new Date(
+                        order.deliveredAt
+                      ).toLocaleString()}`
                     : 'not delivered'}
                 </ListItem>
               </List>
@@ -200,7 +200,9 @@ function Order({ params }) {
                 <ListItem>{order.paymentMethod}</ListItem>
                 <ListItem>
                   Status:{' '}
-                  {order.isPaid ? `paid at ${order.paidAt}` : 'not paid'}
+                  {order.isPaid
+                    ? `paid at ${new Date(order.paidAt).toLocaleString()}`
+                    : 'not paid'}
                 </ListItem>
               </List>
             </Card>
@@ -226,7 +228,9 @@ function Order({ params }) {
                         {order.orderItems.map(item => (
                           <TableRow key={item._id}>
                             <TableCell>
-                              <NextLink href={`/product/${item.slug}`} passHref>
+                              <NextLink
+                                href={`/product/${item.product}`}
+                                passHref>
                                 <Link>
                                   <Image
                                     src={item.image}
@@ -238,7 +242,9 @@ function Order({ params }) {
                             </TableCell>
 
                             <TableCell>
-                              <NextLink href={`/product/${item.slug}`} passHref>
+                              <NextLink
+                                href={`/product/${item.product}`}
+                                passHref>
                                 <Link>
                                   <Typography>{item.name}</Typography>
                                 </Link>
