@@ -172,9 +172,11 @@ const UserState = props => {
   const getAllUsers = async () => {
     try {
       setUserLoading(true)
-      const { data } = await axios.get('/api/users/getAll', { headers })
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/getAll`,
+        { headers }
+      )
       setAllUsers(data.users)
-      setUserError(null)
       setUserLoading(false)
     } catch (err) {
       errorHandler(err)

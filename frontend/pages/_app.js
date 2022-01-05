@@ -5,9 +5,11 @@ import { StoreProvider } from '../utils/Store'
 import { CartProvider } from 'react-use-cart'
 import UserState from '../context/user/UserState'
 import OrderState from '../context/orders/OrderState'
+import ProductState from '../context/product/ProductState'
 import { SnackbarProvider } from 'notistack'
 import { Zoom } from '@material-ui/core'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
+import CategoryState from '../context/category/CategoryState'
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -27,15 +29,19 @@ function MyApp({ Component, pageProps }) {
       TransitionComponent={Zoom}>
       <StoreProvider>
         <UserState>
-          <CartProvider>
-            <OrderState>
-              <Layout>
-                <PayPalScriptProvider deferLoading={true}>
-                  <Component {...pageProps} />
-                </PayPalScriptProvider>
-              </Layout>
-            </OrderState>
-          </CartProvider>
+          <CategoryState>
+            <ProductState>
+              <CartProvider>
+                <OrderState>
+                  <Layout>
+                    <PayPalScriptProvider deferLoading={true}>
+                      <Component {...pageProps} />
+                    </PayPalScriptProvider>
+                  </Layout>
+                </OrderState>
+              </CartProvider>
+            </ProductState>
+          </CategoryState>
         </UserState>
       </StoreProvider>
     </SnackbarProvider>

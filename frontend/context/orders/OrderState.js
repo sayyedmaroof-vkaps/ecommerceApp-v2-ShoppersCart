@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import OrderContext from './orderContext'
 import axios from 'axios'
 import { useCart } from 'react-use-cart'
@@ -29,7 +29,7 @@ const OrderState = props => {
 
   const [orders, setOrders] = useState([])
   const [ordersError, setOrdersError] = useState(null)
-  const [ordersLoading, setOrdersLoading] = useState(null)
+  const [ordersLoading, setOrdersLoading] = useState(false)
   const [ordersMessage, setOrdersMessage] = useState(null)
   const [myOrders, setMyOrders] = useState([])
 

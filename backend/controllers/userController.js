@@ -73,7 +73,7 @@ export const deleteProfile = async (req, res) => {
 // @access Private: Admin
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({ role: 'user' }).sort('-createdAt')
+    const users = await User.find({}).sort('-createdAt')
     res.json({ success: true, users })
   } catch (err) {
     res.status(500).json({ success: false, error: e.message })

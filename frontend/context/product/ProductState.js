@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProductContext from './productContext'
 import axios from 'axios'
+import { useSnackbar } from 'notistack'
 
 // Function for cleaning null, undefined and empty strings values in objects
 function clean(obj) {
@@ -20,32 +21,29 @@ function clean(obj) {
 // Product State
 // ------------------------------------------
 const ProductState = props => {
+  const { enqueueSnackbar } = useSnackbar()
+
   const [products, setProducts] = useState([])
+  const [totalResults, setTotalResults] = useState(0)
   const [productsError, setProductsError] = useState(null)
   const [productsLoading, setProductsLoading] = useState(false)
   const [productsMessage, setProductsMessage] = useState(null)
 
-  useEffect(() => {
-    setTimeout(() => {
-      setProductsError(null)
-      setProductsMessage(null)
-    }, 3000)
-  }, [productsError, productsMessage])
-
-  // Error Handler function
+  // Error handler funtion
   const errorHandler = (err, info) => {
+    if (info === undefined || null) {
+      info = ''
+    }
     if (err.response) {
-      setProductsError({
-        variant: 'danger',
-        message: `${info}, ${err.response.data.error}`,
+      enqueueSnackbar(`${info} ${err.response.data.error}`, {
+        variant: 'error',
       })
     } else if (err.request) {
-      setProductsError({
-        variant: 'danger',
-        message: `${info},  No response from server!`,
+      enqueueSnackbar(`${info} No response from server`, {
+        variant: 'error',
       })
     } else {
-      setProductsError({ variant: 'danger', message: err.message })
+      enqueueSnackbar(err.message, { variant: 'error' })
     }
     setProductsLoading(false)
   }
@@ -54,13 +52,16 @@ const ProductState = props => {
   const getProducts = async (limit, skip, keyword, category) => {
     try {
       setProductsLoading(true)
-      const { data } = await axios.get(`/api/products/getAll`, {
-        params: { limit, skip, keyword, category },
-      })
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/getAll`,
+        {
+          params: { limit, skip, keyword, category },
+        }
+      )
       setProducts(data.products)
       setProductsLoading(false)
       setProductsError(null)
-      return data.totalResults
+      setTotalResults(data.totalResults)
     } catch (err) {
       errorHandler(err, 'could not get products')
     }
@@ -171,6 +172,7 @@ const ProductState = props => {
         productsError,
         productsLoading,
         productsMessage,
+        totalResults,
         addProduct,
         getProducts,
         getOneProduct,
