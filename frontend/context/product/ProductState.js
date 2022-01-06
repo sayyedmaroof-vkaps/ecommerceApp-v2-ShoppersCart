@@ -52,12 +52,9 @@ const ProductState = props => {
   const getProducts = async (limit, skip, keyword, category) => {
     try {
       setProductsLoading(true)
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/getAll`,
-        {
-          params: { limit, skip, keyword, category },
-        }
-      )
+      const { data } = await axios.get(`/api/products/getAll`, {
+        params: { limit, skip, keyword, category },
+      })
       setProducts(data.products)
       setProductsLoading(false)
       setProductsError(null)
@@ -78,14 +75,10 @@ const ProductState = props => {
         'Content-Type': 'multipart/form-data',
       }
       setProductsLoading(true)
-      await axios.post('api/products/add', productBody, { headers })
+      await axios.post('/api/products/add', productBody, { headers })
       // setProducts([productBody, ...products])
-      setProductsMessage({
-        variant: 'success',
-        message: 'Product added successfully!',
-      })
+      enqueueSnackbar('Product added successfully', { variant: 'success' })
       setProductsLoading(false)
-      setProductsError(null)
     } catch (err) {
       errorHandler(err, 'Could not add product')
     }
@@ -108,9 +101,11 @@ const ProductState = props => {
   const updateProductDetails = async (
     id,
     name,
-    sku,
     category,
+    brand,
     price,
+    countInStock,
+    rating,
     description
   ) => {
     try {
@@ -121,18 +116,18 @@ const ProductState = props => {
       }
       const productBody = clean({
         name,
-        sku,
         category,
+        brand,
         price,
+        countInStock,
+        rating,
         description,
       })
       await axios.patch(`/api/products/${id}`, productBody, { headers })
-      setProductsMessage({
+      enqueueSnackbar('Prouduct details updated successfully!', {
         variant: 'success',
-        message: 'Product details updated!',
       })
       setProductsLoading(false)
-      setProductsError(null)
       // getCategories()
     } catch (err) {
       errorHandler(err, 'could not update product details')
@@ -149,16 +144,14 @@ const ProductState = props => {
         'Content-Type': 'multipart/form-data',
       }
       const { data } = await axios.patch(
-        `api/products/${id}/updateImage`,
+        `/api/products/${id}/updateImage`,
         formData,
         { headers }
       )
-      setProductsMessage({
+      enqueueSnackbar('Product image updated successfullt ', {
         variant: 'success',
-        message: 'Product Image updated!',
       })
       setProductsLoading(false)
-      setProductsError(null)
       return data.image
     } catch (err) {
       errorHandler(err, 'Could not update image')

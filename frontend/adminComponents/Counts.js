@@ -30,7 +30,7 @@ const Counts = () => {
 
   return (
     <div className="grid gap-4 lg:grid-cols-3">
-      <NextLink href="/admin/products">
+      <NextLink href="/admin">
         <a>
           <div className="flex items-center px-4 py-6 bg-white rounded-md shadow-md">
             <div className="p-3 bg-red-400 rounded">
@@ -58,7 +58,7 @@ const Counts = () => {
         </a>
       </NextLink>
 
-      <NextLink href="/admin" passHref>
+      <NextLink href="/admin/orders" passHref>
         <a>
           <div className="flex items-center px-4 py-6 bg-white rounded-md shadow-md">
             <div className="p-3 bg-red-400 rounded">

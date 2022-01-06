@@ -50,19 +50,17 @@ const CategoryState = props => {
   const addCategory = async title => {
     const categoryBody = clean({ title })
     try {
+      setCategoriesLoading(true)
       const userToken = JSON.parse(localStorage.getItem('userToken'))
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      setCategoriesLoading(true)
-      await axios.post('api/category/add', categoryBody, { headers })
+      await axios.post('/api/category/add', categoryBody, { headers })
       setCategories([...categories, categoryBody])
-      setCategoriesMessage({
+      enqueueSnackbar(`Category Added: ${categoryBody.title}`, {
         variant: 'success',
-        message: 'category added successfully!',
       })
       setCategoriesLoading(false)
-      setCategoriesError(null)
     } catch (err) {
       errorHandler(err)
     }
@@ -72,9 +70,7 @@ const CategoryState = props => {
   const getCategories = async () => {
     try {
       setCategoriesLoading(true)
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/category/getAll`
-      )
+      const { data } = await axios.get(`/api/category/getAll`)
       setCategories(data.categories)
       setCategoriesLoading(false)
     } catch (err) {

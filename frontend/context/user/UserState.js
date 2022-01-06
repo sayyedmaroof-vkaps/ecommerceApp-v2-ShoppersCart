@@ -71,13 +71,10 @@ const UserState = props => {
   // -----------------------------------------------------------------
   const login = async (email, password) => {
     try {
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login`,
-        {
-          email,
-          password,
-        }
-      )
+      const { data } = await axios.post(`/api/users/login`, {
+        email,
+        password,
+      })
       localStorage.setItem('userInfo', JSON.stringify(data.user))
       localStorage.setItem('userToken', JSON.stringify(data.token))
       setUser(data.user)
@@ -95,10 +92,7 @@ const UserState = props => {
   const signup = async (name, email, password) => {
     try {
       const body = clean({ name, email, password })
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/register`,
-        body
-      )
+      const { data } = await axios.post(`/api/users/register`, body)
       localStorage.setItem('userInfo', JSON.stringify(data.user))
       localStorage.setItem('userToken', JSON.stringify(data.token))
       setUser(data.user)
@@ -151,11 +145,9 @@ const UserState = props => {
     try {
       setUserLoading(true)
       const body = clean({ name, email, password })
-      const { data } = await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/profile`,
-        body,
-        { headers }
-      )
+      const { data } = await axios.patch(`/api/users/profile`, body, {
+        headers,
+      })
       setUser(data.user)
       localStorage.setItem('userInfo', JSON.stringify(data.user))
       setUserLoading(false)
@@ -172,10 +164,7 @@ const UserState = props => {
   const getAllUsers = async () => {
     try {
       setUserLoading(true)
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/getAll`,
-        { headers }
-      )
+      const { data } = await axios.get(`/api/users/getAll`, { headers })
       setAllUsers(data.users)
       setUserLoading(false)
     } catch (err) {

@@ -19,7 +19,7 @@ export const addProduct = async (req, res) => {
 
     const product = new Product({
       ...req.body,
-      image: `uploads/${date.getTime()}${req.file.originalname}`,
+      image: `/uploads/${date.getTime()}${req.file.originalname}`,
     })
 
     await sharp(req.file.buffer)
@@ -31,7 +31,7 @@ export const addProduct = async (req, res) => {
   } catch (err) {
     if (req.file) {
       fs.unlinkSync(
-        path.resolve(`uploads/${date.getTime()}${req.file.originalname}`)
+        path.resolve(`/uploads/${date.getTime()}${req.file.originalname}`)
       )
     }
     res.status(400).json({ success: false, error: err.message })
@@ -122,7 +122,15 @@ export const getProduct = async (req, res) => {
 // @access Private : Admin
 export const updateProductDetails = async (req, res) => {
   const updates = Object.keys(req.body)
-  const allowedUpdates = ['name', 'sku', 'category', 'price', 'description']
+  const allowedUpdates = [
+    'name',
+    'category',
+    'brand',
+    'price',
+    'countInStock',
+    'rating',
+    'description',
+  ]
   const isValidOperation = updates.every(update =>
     allowedUpdates.includes(update)
   )
@@ -169,15 +177,15 @@ export const updateProductImage = async (req, res) => {
       .resize({ width: 400, height: 400 })
       .toFile(`uploads/${date.getTime()}${req.file.originalname}`)
 
-    product.image = `uploads/${date.getTime()}${req.file.originalname}`
+    product.image = `/uploads/${date.getTime()}${req.file.originalname}`
     await product.save()
     res.json({ success: true, message: 'Image updated', image: product.image })
   } catch (err) {
-    if (req.file) {
-      fs.unlinkSync(
-        path.resolve(`uploads/${date.getTime()}${req.file.originalname}`)
-      )
-    }
+    // if (req.file) {
+    //   fs.unlinkSync(
+    //     path.resolve(`uploads/${date.getTime()}${req.file.originalname}`)
+    //   )
+    // }
     res.status(400).json({ success: false, error: err.message })
   }
 }

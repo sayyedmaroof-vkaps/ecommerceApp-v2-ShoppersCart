@@ -80,13 +80,9 @@ const OrderState = props => {
         Authorization: `Bearer ${userToken && userToken}`,
       }
       setOrdersLoading(true)
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/new`,
-        orderBody,
-        {
-          headers,
-        }
-      )
+      const { data } = await axios.post(`/api/orders/new`, orderBody, {
+        headers,
+      })
       emptyCart()
       router.push(`/order/${data.order._id}`)
       enqueueSnackbar('Order Placed Successfully', { variant: 'success' })
@@ -106,10 +102,7 @@ const OrderState = props => {
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/getAll`,
-        { headers }
-      )
+      const { data } = await axios.get(`/api/orders/getAll`, { headers })
       setOrders(data.orders)
       setOrdersLoading(false)
     } catch (err) {
@@ -127,10 +120,7 @@ const OrderState = props => {
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/myOrders`,
-        { headers }
-      )
+      const { data } = await axios.get(`/api/orders/myOrders`, { headers })
       setMyOrders(data.myOrders)
       setOrdersLoading(false)
       setOrdersError(null)
@@ -149,12 +139,9 @@ const OrderState = props => {
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/myOrders/${id}`,
-        {
-          headers,
-        }
-      )
+      const { data } = await axios.get(`/api/orders/myOrders/${id}`, {
+        headers,
+      })
       setOrdersLoading(false)
       return data.order
     } catch (err) {

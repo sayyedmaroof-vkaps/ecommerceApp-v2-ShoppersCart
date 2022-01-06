@@ -16,7 +16,7 @@ export default function Home({ products }) {
 export async function getServerSideProps() {
   try {
     const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/getAll?limit=100&skip=0`
+      `http://localhost:3000/api/products/getAll?limit=100&skip=0`
     )
     // console.log(data)
     return {

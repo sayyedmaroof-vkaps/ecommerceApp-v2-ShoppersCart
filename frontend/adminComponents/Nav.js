@@ -7,8 +7,8 @@ const Nav = props => {
   const uContext = useContext(UserContext)
   const { user } = uContext
   return (
-    <div className="px-4 py-2  bg-red-400 lg:w-1/4">
-      <svg
+    <div className="px-4 py-2  bg-red-400 w-1/4">
+      {/* <svg
         xmlns="http://www.w3.org/2000/svg"
         className="inline w-8 h-8 text-white lg:hidden"
         fill="none"
@@ -20,8 +20,8 @@ const Nav = props => {
           strokeWidth={2}
           d="M4 6h16M4 12h16M4 18h16"
         />
-      </svg>
-      <div className="hidden lg:block">
+      </svg> */}
+      <div className=" lg:block">
         <div className="my-2 mb-6">
           <h1 className="text-2xl font-bold text-white">
             Admin : <br /> <span className="text-purple-800"> {user.name}</span>
@@ -34,7 +34,7 @@ const Nav = props => {
                 ? 'bg-gray-800'
                 : 'hover:bg-gray-600'
             }   rounded shadow`}>
-            <NextLink href="/admin">
+            <NextLink href="/admin/orders">
               <a className="inline-block w-full h-full px-3 py-2 font-bold text-white">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +57,7 @@ const Nav = props => {
                 ? 'bg-gray-800'
                 : 'hover:bg-gray-600'
             }   rounded shadow`}>
-            <NextLink href="/admin/products">
+            <NextLink href="/admin">
               <a className="inline-block w-full h-full px-3 py-2 font-bold text-white">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -119,6 +119,32 @@ const Nav = props => {
                   />
                 </svg>
                 Add Product
+              </a>
+            </NextLink>
+          </li>
+
+          <li
+            className={`mb-2 ${
+              props.activeScreen === 'addCategory'
+                ? 'bg-gray-800'
+                : 'hover:bg-gray-600'
+            }   rounded shadow`}>
+            <NextLink href="/admin/addCategory">
+              <a className="inline-block w-full h-full px-3 py-2 font-bold text-white">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="inline-block w-6 h-6 mr-2 -mt-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                Add Category
               </a>
             </NextLink>
           </li>

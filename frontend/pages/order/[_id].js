@@ -99,9 +99,7 @@ function Order({ params }) {
       if (successPay) dispatch({ type: 'PAY_RESET' })
     } else {
       const loadPaypalScript = async () => {
-        const { data: clientId } = await axios.get(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/config/paypal`
-        )
+        const { data: clientId } = await axios.get(`/api/config/paypal`)
         paypalDispatch({
           type: 'resetOptions',
           value: {
@@ -137,7 +135,7 @@ function Order({ params }) {
           Authorization: `Bearer ${userToken && userToken}`,
         }
         const { data } = await axios.patch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${order._id}/pay`,
+          `/api/orders/${order._id}/pay`,
           details,
           {
             headers,
