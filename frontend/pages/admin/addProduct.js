@@ -31,8 +31,6 @@ const AddProduct = () => {
 
   const [image, setImage] = useState(null)
 
-  console.log(product, image)
-
   const handleChange = e => {
     setProduct({ ...product, [e.target.name]: e.target.value })
   }
@@ -233,7 +231,7 @@ const AddProduct = () => {
                           name="image"
                           onChange={e => setImage(e.target.files[0])}
                         />
-                        <p class="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500">
                           PNG, JPG, GIF up to 10MB
                         </p>
                       </div>

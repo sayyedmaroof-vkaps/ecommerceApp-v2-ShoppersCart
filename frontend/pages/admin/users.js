@@ -11,9 +11,6 @@ const Users = () => {
   // for user context
   const uContext = useContext(UserContext)
   const { user, allUsers, getAllUsers } = uContext
-  // for order context
-  //   const oContext = useContext(OrderContext)
-  //   const { getAllOrders, orders, ordersLoading } = oContext
 
   useEffect(() => {
     if (user.role !== 'admin') {

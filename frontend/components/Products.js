@@ -6,6 +6,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Chip,
   Grid,
   Typography,
 } from '@material-ui/core'
@@ -21,7 +22,9 @@ const Products = ({ products }) => {
 
   return (
     <>
-      <h1>Products</h1>
+      <Typography variant="h1" element="h1">
+        Products
+      </Typography>
       <Grid container spacing={3}>
         {products.map(product => (
           <Grid item md={4} key={product.name}>
@@ -34,14 +37,23 @@ const Products = ({ products }) => {
                     title={product.name}
                   />
                   <CardContent>
-                    <Typography>{product.name}</Typography>
+                    <Typography element="span" variant="button">
+                      {product.name}
+                    </Typography>
+                    <Chip
+                      label={product.category.title}
+                      sx={{ ml: 3 }}
+                      color="success"
+                    />
                   </CardContent>
                 </CardActionArea>
               </NextLink>
               <CardActions>
                 <Typography>${product.price}</Typography>
+
                 <Button
                   size="small"
+                  variant="contained"
                   color="secondary"
                   onClick={() => {
                     let item = {

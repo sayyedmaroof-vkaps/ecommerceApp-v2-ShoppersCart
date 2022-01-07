@@ -124,18 +124,6 @@ const ProductDetails = ({ params }) => {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  {/* <select
-                    className="bg-gray-200 appearance-none border-2 border-gray-700 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                    id="grid-state"
-                    name="category"
-                    onChange={handleChange}>
-                    <option>Select Category</option>
-                    {categories.map(item => (
-                      <option key={item._id} value={item._id}>
-                        {item.title}
-                      </option>
-                    ))}
-                  </select> */}
                   <select
                     className="bg-gray-200 appearance-none border-2 border-gray-700 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                     name="category"
@@ -263,11 +251,11 @@ const ProductDetails = ({ params }) => {
           </div>
         </div>
         <div className="w-1/3 py-2 my-2 mx-auto overflow-x-auto  sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 ">
-          <div class="container  mx-auto">
+          <div className="container  mx-auto">
             <h1 className="text-2xl text-center  text-black font-bold">
               This will be image
             </h1>
-            <div class="w-full rounded">
+            <div className="w-full rounded">
               <img src={image} alt="image" />
             </div>
           </div>
@@ -288,7 +276,7 @@ const ProductDetails = ({ params }) => {
                 name="image"
                 onChange={e => setImageFile(e.target.files[0])}
               />
-              <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+              <p className="text-xs text-gray-500">PNG, JPG, GIF up to 3MB</p>
             </div>
           </div>
           <div className="flex ">

@@ -24,9 +24,7 @@ const CategoryState = props => {
   const { enqueueSnackbar } = useSnackbar()
 
   const [categories, setCategories] = useState([])
-  const [categoriesError, setCategoriesError] = useState(null)
   const [categoriesLoading, setCategoriesLoading] = useState(false)
-  const [categoriesMessage, setCategoriesMessage] = useState(null)
 
   // Error handler funtion
   const errorHandler = (err, info) => {
@@ -90,19 +88,16 @@ const CategoryState = props => {
 
   const updateCategory = async (id, title) => {
     try {
+      setCategoriesLoading(true)
       const userToken = JSON.parse(localStorage.getItem('userToken'))
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      setCategoriesLoading(true)
       await axios.patch(`api/category/${id}`, { title }, { headers })
-      getCategories()
-      setCategoriesMessage({
-        variant: 'info',
-        message: 'Category updated!',
+      enqueueSnackbar(`Category Updaated successfully with title ${title}`, {
+        variant: 'success',
       })
       setCategoriesLoading(false)
-      setCategoriesError(null)
     } catch (err) {
       errorHandler(err)
     }
@@ -112,8 +107,6 @@ const CategoryState = props => {
     <CategoryContext.Provider
       value={{
         categories,
-        // categoriesError,
-        // categoriesMessage,
         categoriesLoading,
         getCategories,
         addCategory,

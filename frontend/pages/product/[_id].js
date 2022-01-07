@@ -32,7 +32,7 @@ export async function getServerSideProps({ params }) {
   const { _id } = params
   try {
     const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${_id}`
+      `http://localhost:3000/api/products/${_id}`
     )
     return {
       props: {

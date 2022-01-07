@@ -1,9 +1,7 @@
 import axios from 'axios'
-// import data from '../utils/data'
 import Meta from '../components/Meta'
 import { Fragment } from 'react'
 import Products from '../components/Products'
-
 export default function Home({ products }) {
   return (
     <Fragment>

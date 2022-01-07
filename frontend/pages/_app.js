@@ -28,10 +28,10 @@ function MyApp({ Component, pageProps }) {
       autoHideDuration={4000}
       TransitionComponent={Zoom}>
       <StoreProvider>
-        <UserState>
-          <CategoryState>
-            <ProductState>
-              <CartProvider>
+        <CartProvider>
+          <UserState>
+            <CategoryState>
+              <ProductState>
                 <OrderState>
                   <Layout>
                     <PayPalScriptProvider deferLoading={true}>
@@ -39,10 +39,10 @@ function MyApp({ Component, pageProps }) {
                     </PayPalScriptProvider>
                   </Layout>
                 </OrderState>
-              </CartProvider>
-            </ProductState>
-          </CategoryState>
-        </UserState>
+              </ProductState>
+            </CategoryState>
+          </UserState>
+        </CartProvider>
       </StoreProvider>
     </SnackbarProvider>
   )

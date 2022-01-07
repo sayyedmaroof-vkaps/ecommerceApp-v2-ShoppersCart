@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import ProductContext from './productContext'
 import axios from 'axios'
 import { useSnackbar } from 'notistack'
@@ -25,9 +25,7 @@ const ProductState = props => {
 
   const [products, setProducts] = useState([])
   const [totalResults, setTotalResults] = useState(0)
-  const [productsError, setProductsError] = useState(null)
   const [productsLoading, setProductsLoading] = useState(false)
-  const [productsMessage, setProductsMessage] = useState(null)
 
   // Error handler funtion
   const errorHandler = (err, info) => {
@@ -57,7 +55,6 @@ const ProductState = props => {
       })
       setProducts(data.products)
       setProductsLoading(false)
-      setProductsError(null)
       setTotalResults(data.totalResults)
     } catch (err) {
       errorHandler(err, 'could not get products')
@@ -67,16 +64,14 @@ const ProductState = props => {
   // Add new product
   const addProduct = async fromData => {
     const productBody = clean(fromData)
-    console.log(productBody, ' productBody')
     try {
+      setProductsLoading(true)
       const userToken = JSON.parse(localStorage.getItem('userToken'))
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
         'Content-Type': 'multipart/form-data',
       }
-      setProductsLoading(true)
       await axios.post('/api/products/add', productBody, { headers })
-      // setProducts([productBody, ...products])
       enqueueSnackbar('Product added successfully', { variant: 'success' })
       setProductsLoading(false)
     } catch (err) {
@@ -90,7 +85,6 @@ const ProductState = props => {
       setProductsLoading(true)
       const { data } = await axios.get(`/api/products/${id}`)
       setProductsLoading(false)
-      setProductsError(null)
       return data.product
     } catch (err) {
       errorHandler(err)
@@ -128,7 +122,6 @@ const ProductState = props => {
         variant: 'success',
       })
       setProductsLoading(false)
-      // getCategories()
     } catch (err) {
       errorHandler(err, 'could not update product details')
     }
@@ -148,7 +141,7 @@ const ProductState = props => {
         formData,
         { headers }
       )
-      enqueueSnackbar('Product image updated successfullt ', {
+      enqueueSnackbar('Product image updated successfully ', {
         variant: 'success',
       })
       setProductsLoading(false)
@@ -162,16 +155,13 @@ const ProductState = props => {
     <ProductContext.Provider
       value={{
         products,
-        productsError,
         productsLoading,
-        productsMessage,
         totalResults,
         addProduct,
         getProducts,
         getOneProduct,
         updateProductDetails,
         updateProductImage,
-
         errorHandler,
       }}>
       {props.children}

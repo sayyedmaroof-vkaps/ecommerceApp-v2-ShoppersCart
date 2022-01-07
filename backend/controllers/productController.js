@@ -13,7 +13,7 @@ export const addProduct = async (req, res) => {
 
     fs.access('uploads', err => {
       if (err) {
-        fs.mkdirSync('/uploads')
+        fs.mkdirSync('uploads')
       }
     })
 
@@ -31,7 +31,7 @@ export const addProduct = async (req, res) => {
   } catch (err) {
     if (req.file) {
       fs.unlinkSync(
-        path.resolve(`/uploads/${date.getTime()}${req.file.originalname}`)
+        path.resolve(`uploads/${date.getTime()}${req.file.originalname}`)
       )
     }
     res.status(400).json({ success: false, error: err.message })
@@ -171,21 +171,21 @@ export const updateProductImage = async (req, res) => {
         fs.mkdirSync('/uploads')
       }
     })
-    fs.unlinkSync(path.resolve(product.image))
+    fs.unlinkSync(path.resolve(product.image.substring(1)))
 
     await sharp(req.file.buffer)
-      .resize({ width: 400, height: 400 })
+      .resize({ width: 800, height: 800 })
       .toFile(`uploads/${date.getTime()}${req.file.originalname}`)
 
     product.image = `/uploads/${date.getTime()}${req.file.originalname}`
     await product.save()
     res.json({ success: true, message: 'Image updated', image: product.image })
   } catch (err) {
-    // if (req.file) {
-    //   fs.unlinkSync(
-    //     path.resolve(`uploads/${date.getTime()}${req.file.originalname}`)
-    //   )
-    // }
+    if (req.file) {
+      fs.unlinkSync(
+        path.resolve(`uploads/${date.getTime()}${req.file.originalname}`)
+      )
+    }
     res.status(400).json({ success: false, error: err.message })
   }
 }

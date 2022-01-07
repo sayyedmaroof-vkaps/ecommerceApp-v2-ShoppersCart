@@ -25,6 +25,7 @@ import Meta from '../../components/Meta'
 import UserContext from '../../context/user/UserContext'
 import OrderContext from '../../context/orders/orderContext'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
+import Loader from '../../components/Loader'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -161,7 +162,7 @@ function Order({ params }) {
         Order: {orderId}
       </Typography>
       {ordersLoading ? (
-        <CircularProgress />
+        <Loader />
       ) : (
         <Grid container spacing={1}>
           <Grid item md={9} xs={12}>
@@ -318,7 +319,7 @@ function Order({ params }) {
                 {!order.isPaid && (
                   <ListItem>
                     {isPending ? (
-                      <CircularProgress />
+                      <Loader />
                     ) : (
                       <div className={classes.fullWidth}>
                         <PayPalButtons

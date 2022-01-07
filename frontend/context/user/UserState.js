@@ -1,7 +1,6 @@
 import UserContext from './UserContext'
 import React, { useState } from 'react'
 import axios from 'axios'
-// import { useNavigate } from 'react-router-dom'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useCart } from 'react-use-cart'
@@ -22,9 +21,7 @@ function clean(obj) {
 
 const UserState = props => {
   const { enqueueSnackbar } = useSnackbar()
-
   const { emptyCart } = useCart()
-
   const router = useRouter()
 
   // axios config
@@ -41,11 +38,6 @@ const UserState = props => {
   )
   const [userLoading, setUserLoading] = useState(false)
   const [allUsers, setAllUsers] = useState([])
-
-  // useEffect(() => {
-  //   const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-  //   setUser(userInfo)
-  // }, [])
 
   // Error handler funtion
   const errorHandler = (err, info) => {
@@ -108,12 +100,13 @@ const UserState = props => {
   // -----------------------------------------------------------------
   const logout = async () => {
     try {
+      setUserLoading(true)
       localStorage.removeItem('userInfo')
       localStorage.removeItem('userToken')
       localStorage.removeItem('react-use-cart')
       localStorage.removeItem('shoppersCart-shippingAddress')
       localStorage.removeItem('shoppersCart-paymentMethod')
-      emptyCart
+      emptyCart()
       setUser(null)
       setUserLoading(false)
       enqueueSnackbar('User logged out')

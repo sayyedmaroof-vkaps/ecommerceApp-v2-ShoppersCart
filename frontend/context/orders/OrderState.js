@@ -28,9 +28,7 @@ const OrderState = props => {
   const { emptyCart } = useCart()
 
   const [orders, setOrders] = useState([])
-  const [ordersError, setOrdersError] = useState(null)
   const [ordersLoading, setOrdersLoading] = useState(false)
-  const [ordersMessage, setOrdersMessage] = useState(null)
   const [myOrders, setMyOrders] = useState([])
 
   // Error handler funtion
@@ -63,7 +61,6 @@ const OrderState = props => {
     shippingPrice,
     taxPrice,
     totalPrice
-    // paymentResult
   ) => {
     const orderBody = clean({
       orderItems,
@@ -75,17 +72,17 @@ const OrderState = props => {
       totalPrice,
     })
     try {
+      setOrdersLoading(true)
       const userToken = JSON.parse(localStorage.getItem('userToken'))
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      setOrdersLoading(true)
       const { data } = await axios.post(`/api/orders/new`, orderBody, {
         headers,
       })
+      enqueueSnackbar('Order Placed Successfully', { variant: 'success' })
       emptyCart()
       router.push(`/order/${data.order._id}`)
-      enqueueSnackbar('Order Placed Successfully', { variant: 'success' })
       setOrdersLoading(false)
     } catch (err) {
       errorHandler(err)
@@ -123,7 +120,6 @@ const OrderState = props => {
       const { data } = await axios.get(`/api/orders/myOrders`, { headers })
       setMyOrders(data.myOrders)
       setOrdersLoading(false)
-      setOrdersError(null)
     } catch (err) {
       errorHandler(err)
     }
@@ -163,7 +159,6 @@ const OrderState = props => {
         headers,
       })
       setOrdersLoading(false)
-      setOrdersError(null)
       return data.order
     } catch (err) {
       errorHandler(err)
@@ -175,9 +170,7 @@ const OrderState = props => {
       value={{
         placeOrder,
         orders,
-        ordersError,
         ordersLoading,
-        ordersMessage,
         myOrders,
         getAllOrders,
         getMyOrders,

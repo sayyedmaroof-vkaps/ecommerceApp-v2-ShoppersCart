@@ -1,5 +1,6 @@
 import NextLink from 'next/link'
 import { useContext, useEffect, useState } from 'react'
+import Loader from './Loader'
 import {
   AppBar,
   Container,
@@ -20,12 +21,24 @@ import { Store } from '../utils/Store'
 import { useCart } from 'react-use-cart'
 import UserContext from '../context/user/UserContext'
 import { useRouter } from 'next/router'
+import ProductContext from '../context/product/productContext'
+import CategoryContext from '../context/category/categoryContext'
+import OrderContext from '../context/orders/orderContext'
 
 const Layout = ({ children }) => {
   const router = useRouter()
 
   const uContext = useContext(UserContext)
-  const { user, logout } = uContext
+  const { user, logout, userLoading } = uContext
+  // for Product context
+  const pContext = useContext(ProductContext)
+  const { productsLoading } = pContext
+  // for category context
+  const cContext = useContext(CategoryContext)
+  const { categoriesLoading } = cContext
+  // for product context
+  const oContext = useContext(OrderContext)
+  const { ordersLoading } = oContext
 
   const { totalUniqueItems } = useCart()
 
@@ -86,6 +99,10 @@ const Layout = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      {ordersLoading ||
+        productsLoading ||
+        userLoading ||
+        (categoriesLoading && <Loader />)}
       <AppBar position="static" className={classes.navbar}>
         <Toolbar>
           <NextLink href="/" passHref>
