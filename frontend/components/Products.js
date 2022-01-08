@@ -40,11 +40,7 @@ const Products = ({ products }) => {
                     <Typography element="span" variant="button">
                       {product.name}
                     </Typography>
-                    <Chip
-                      label={product.category.title}
-                      sx={{ ml: 3 }}
-                      color="success"
-                    />
+                    <Chip label={product.category.title} color="inherit" />
                   </CardContent>
                 </CardActionArea>
               </NextLink>
