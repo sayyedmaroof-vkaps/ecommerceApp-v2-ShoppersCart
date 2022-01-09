@@ -16,6 +16,21 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core'
+import {
+  AccountCircle,
+  DeleteSweep,
+  ExitToApp,
+  ExposurePlus1,
+  Input,
+  Person,
+  PlusOne,
+  Remove,
+  RemoveTwoTone,
+  Settings,
+  ShoppingCartOutlined,
+  ShoppingCartSharp,
+  ViewList,
+} from '@material-ui/icons'
 import useStyles from '../utils/styles'
 import { Store } from '../utils/Store'
 import { useCart } from 'react-use-cart'
@@ -103,12 +118,14 @@ const Layout = ({ children }) => {
         productsLoading ||
         userLoading ||
         (categoriesLoading && <Loader />)}
-      <AppBar position="static" className={classes.navbar}>
+      <AppBar position="sticky" className={classes.navbar}>
         <Toolbar>
           <NextLink href="/" passHref>
-            <Link>
-              <Typography className={classes.brand}>ShoppersCart</Typography>
-            </Link>
+            <a>
+              <Typography className={classes.brand}>
+                <ShoppingCartOutlined /> ShoppersCart
+              </Typography>
+            </a>
           </NextLink>
           <div className={classes.grow}></div>
           <div>
@@ -118,10 +135,13 @@ const Layout = ({ children }) => {
               <Link>
                 {cartItems > 0 ? (
                   <Badge badgeContent={cartItems} color="secondary">
-                    Cart
+                    Cart <ShoppingCartSharp />
                   </Badge>
                 ) : (
-                  'Cart'
+                  <>
+                    Cart
+                    <ShoppingCartSharp />
+                  </>
                 )}
               </Link>
             </NextLink>
@@ -133,7 +153,7 @@ const Layout = ({ children }) => {
                     aria-haspopup="true"
                     onClick={loginClickHandler}
                     className={classes.navbarButton}>
-                    {user.name}
+                    {user.name} <Person />
                   </Button>
                   <Menu
                     id="simple-menu"
@@ -143,25 +163,29 @@ const Layout = ({ children }) => {
                     onClose={loginMenuCloseHandler}>
                     <MenuItem
                       onClick={e => loginMenuCloseHandler(e, '/profile')}>
-                      Profile
+                      <AccountCircle /> Profile
                     </MenuItem>
                     <MenuItem
                       onClick={e => loginMenuCloseHandler(e, '/order-history')}>
-                      Order History
+                      <ViewList /> Order History
                     </MenuItem>
                     {user.role === 'admin' && (
                       <MenuItem
                         onClick={e => loginMenuCloseHandler(e, '/admin')}>
-                        Admin Dashboard
+                        <Settings /> Admin Dashboard
                       </MenuItem>
                     )}
-                    <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+                    <MenuItem onClick={logoutClickHandler}>
+                      <ExitToApp /> Logout
+                    </MenuItem>
                   </Menu>
                 </>
               </>
             ) : (
               <NextLink href="/login" passHref>
-                <Link>login</Link>
+                <Link>
+                  Login <Input />
+                </Link>
               </NextLink>
             )}
           </div>

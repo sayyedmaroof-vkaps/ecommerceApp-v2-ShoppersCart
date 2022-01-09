@@ -13,10 +13,11 @@ import {
 import { useCart } from 'react-use-cart'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
+import useStyles from '../utils/styles'
 
 const Products = ({ products }) => {
+  const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
-
   const router = useRouter()
   const { addItem, items: cartItems } = useCart()
 
@@ -36,16 +37,27 @@ const Products = ({ products }) => {
                     image={product.image}
                     title={product.name}
                   />
-                  <CardContent>
-                    <Typography element="span" variant="button">
+                  <CardContent className="flex justify-start items-center">
+                    <Typography variant="h6" className={classes.disableSpacing}>
                       {product.name}
                     </Typography>
-                    <Chip label={product.category.title} color="inherit" />
+                    <Chip
+                      label={product.category.title}
+                      color="primary"
+                      variant="default"
+                      size="small"
+                      className={classes.chipStyle}
+                    />
                   </CardContent>
                 </CardActionArea>
               </NextLink>
-              <CardActions>
-                <Typography>${product.price}</Typography>
+              <CardActions className="flex items-center justify-between">
+                <Typography
+                  element="h2"
+                  variant="h2"
+                  className={classes.disableSpacing}>
+                  ${product.price}
+                </Typography>
 
                 <Button
                   size="small"
@@ -57,13 +69,12 @@ const Products = ({ products }) => {
                       id: product._id,
                     }
                     const existItem = cartItems.find(x => x._id === product._id)
-                    if (
-                      existItem &&
-                      product.countInStock <= existItem.quantity
-                    ) {
-                      window.alert('sorry, the product is out of stock')
-                      return
-                    }
+                    if (existItem && product.countInStock <= existItem.quantity)
+                      return enqueueSnackbar(
+                        'sorry, the product is out of stock',
+                        { variant: 'warning' }
+                      )
+
                     addItem(item, 1)
                     enqueueSnackbar('Product added to cart', {
                       variant: 'info',
@@ -71,7 +82,7 @@ const Products = ({ products }) => {
                     })
                     router.push('/cart')
                   }}>
-                  <strong>Add To Cart</strong>
+                  Add To Cart
                 </Button>
               </CardActions>
             </Card>

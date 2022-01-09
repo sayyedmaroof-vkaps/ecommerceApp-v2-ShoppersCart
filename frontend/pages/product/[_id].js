@@ -1,4 +1,4 @@
-import { Chip, Link, Typography } from '@material-ui/core'
+import { Button, Chip, Link, Typography } from '@material-ui/core'
 import NextLink from 'next/link'
 import { Fragment } from 'react'
 import Meta from '../../components/Meta'
@@ -16,15 +16,9 @@ const ProductScreen = ({ product }) => {
       <Meta title={product.name} description={product.description} />
       <div className={classes.section}>
         <NextLink href="/" passHref>
-          <Link>
-            <Typography variant="button" element="button">
-              <Chip
-                variant="outlined"
-                color="primary"
-                label="Back to products"
-              />
-            </Typography>
-          </Link>
+          <Button variant="outlined" color="primary" size="small">
+            Back to products
+          </Button>
         </NextLink>
       </div>
       <ProductDetails product={product} />

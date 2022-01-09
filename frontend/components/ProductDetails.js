@@ -1,17 +1,22 @@
 import {
   Button,
   Card,
+  Chip,
   Grid,
   List,
   ListItem,
   Typography,
 } from '@material-ui/core'
+import { AddShoppingCartSharp, Star } from '@material-ui/icons'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useCart } from 'react-use-cart'
+import useStyles from '../utils/styles'
+import Rating from './Rating'
 
 const ProductDetails = ({ product }) => {
+  const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const { addItem, items: cartItems } = useCart()
   const router = useRouter()
@@ -36,18 +41,31 @@ const ProductDetails = ({ product }) => {
               </Typography>
             </ListItem>
             <ListItem>
-              <Typography>Category: {product.category.title}</Typography>
-            </ListItem>
-            <ListItem>
-              <Typography>Brand: {product.brand}</Typography>
-            </ListItem>
-            <ListItem>
               <Typography>
-                Rating: {product.rating} stars ({product.numReviews} reviews)
+                Category:{' '}
+                <Chip
+                  label={product.category.title}
+                  color="primary"
+                  variant="default"
+                  size="small"
+                  className={classes.chipStyle}
+                />
               </Typography>
             </ListItem>
             <ListItem>
-              <Typography>Description: {product.description}</Typography>
+              <Typography>
+                Brand: <Chip label={product.brand} />
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography>
+                <Rating value={product.rating} text={product.numReviews} />
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography>
+                <strong>Description</strong>: {product.description}
+              </Typography>
             </ListItem>
           </List>
         </Grid>
@@ -91,8 +109,10 @@ const ProductDetails = ({ product }) => {
                       existItem &&
                       product.countInStock <= existItem.quantity
                     ) {
-                      window.alert('sorry, the product is out of stock')
-                      return
+                      return enqueueSnackbar(
+                        'sorry, the product is out of stock',
+                        { variant: 'warning' }
+                      )
                     }
                     addItem(item, 1)
                     enqueueSnackbar('Product added to cart', {
@@ -101,7 +121,7 @@ const ProductDetails = ({ product }) => {
                     })
                     router.push('/cart')
                   }}>
-                  Add To Cart
+                  <AddShoppingCartSharp className="mx-3" /> Add To Cart
                 </Button>
               </ListItem>
             </List>

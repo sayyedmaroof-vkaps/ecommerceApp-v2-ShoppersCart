@@ -26,6 +26,7 @@ import UserContext from '../../context/user/UserContext'
 import OrderContext from '../../context/orders/orderContext'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import Loader from '../../components/Loader'
+import { Store } from '../../utils/Store'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -64,6 +65,9 @@ function Order({ params }) {
   // for order context
   const oContext = useContext(OrderContext)
   const { getOneOrder, ordersLoading } = oContext
+
+  const { state } = useContext(Store)
+  const { paymentMethod } = state
 
   const [{ loading, error, successPay }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -316,7 +320,7 @@ function Order({ params }) {
                     </Grid>
                   </Grid>
                 </ListItem>
-                {!order.isPaid && (
+                {paymentMethod === 'PayPal' && !order.isPaid && (
                   <ListItem>
                     {isPending ? (
                       <Loader />

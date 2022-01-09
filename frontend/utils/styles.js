@@ -17,6 +17,7 @@ const useStyles = makeStyles({
   },
   main: {
     minHeight: '80vh',
+    margin: '20px 0',
   },
   footer: {
     minHeight: 50,
@@ -42,6 +43,13 @@ const useStyles = makeStyles({
   },
   fullWidth: {
     width: '100%',
+  },
+  chipStyle: {
+    margin: '0 10px',
+  },
+  disableSpacing: {
+    margin: 0,
+    padding: 0,
   },
 })
 

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  Chip,
   Grid,
   Link,
   List,
@@ -16,6 +17,15 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core'
+import {
+  CheckOutlined,
+  MoveToInbox,
+  Payment,
+  RemoveShoppingCart,
+} from '@material-ui/icons'
+// import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart'
+// import { RemoveShoppingCart } from '@mui/icons-material'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import NextLink from 'next/link'
@@ -44,12 +54,12 @@ const CartScreen = () => {
         Shopping Cart
       </Typography>
       {isEmpty ? (
-        <div>
-          Cart is empty.{' '}
+        <Typography variant="h2" component="h1">
+          Cart is empty. <RemoveShoppingCartIcon />
           <NextLink href="/" passHref>
             <Link>Go Shopping</Link>
           </NextLink>
-        </div>
+        </Typography>
       ) : (
         <Grid container spacing={1}>
           <Grid item md={9} xs={12}>
@@ -124,10 +134,9 @@ const CartScreen = () => {
                       <TableCell align="right">
                         <Button
                           variant="contained"
-                          style={{ backgroundColor: '#ff5e39' }}
-                          color="inherit"
+                          color="secondary"
                           onClick={() => removeItem(item.id)}>
-                          x
+                          <RemoveShoppingCart />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -150,7 +159,7 @@ const CartScreen = () => {
                     variant="contained"
                     color="primary"
                     onClick={() => router.push('/shipping')}>
-                    Checkout
+                    Proceed Checkout
                   </Button>
                 </ListItem>
               </List>
@@ -159,7 +168,12 @@ const CartScreen = () => {
           <Grid item md={12}>
             <Box textAlign="center" my={3}>
               <NextLink href="/" passHref>
-                <Link>Continue Shopping</Link>
+                <Chip
+                  clickable
+                  label="Continue Shopping"
+                  variant="outlined"
+                  color="primary"
+                />
               </NextLink>
             </Box>
             <Box textAlign="center" my={3}>
@@ -168,6 +182,7 @@ const CartScreen = () => {
                 color="secondary"
                 onClick={() => emptyCart()}>
                 Empty Cart
+                <RemoveShoppingCartIcon />
               </Button>
             </Box>
           </Grid>

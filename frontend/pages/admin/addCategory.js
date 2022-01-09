@@ -36,7 +36,9 @@ const AddCategory = () => {
             <Counts />
             <div className="flex flex-col mt-8">
               <div className="py-2 -my-2 overflow-x-auto  sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                <h3 className="text-2xl text-black font-bold">Add Product</h3>
+                <h3 className="text-2xl text-black font-bold">
+                  Add New Category
+                </h3>
                 <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-700 shadow sm:rounded-lg">
                   <form
                     className="min-w-full my-4"
@@ -51,10 +53,11 @@ const AddCategory = () => {
                       </div>
                       <div className="md:w-2/3">
                         <input
-                          className="bg-gray-200 appearance-none border-2 border-gray-700 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                          className="bg-gray-200 appearance-none border-2 border-gray-700 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 placeholder:text-stone-900"
                           id="inline-full-name"
                           name="title"
                           type="text"
+                          placeholder="Enter cetegory title"
                           value={category.title}
                           onChange={handleChange}
                         />

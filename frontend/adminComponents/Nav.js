@@ -8,19 +8,6 @@ const Nav = props => {
   const { user } = uContext
   return (
     <div className="px-4 py-2  bg-red-400 w-1/4">
-      {/* <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="inline w-8 h-8 text-white lg:hidden"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M4 6h16M4 12h16M4 18h16"
-        />
-      </svg> */}
       <div className=" lg:block">
         <div className="my-2 mb-6">
           <h1 className="text-2xl font-bold text-white">

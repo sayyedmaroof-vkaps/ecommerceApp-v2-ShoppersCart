@@ -48,7 +48,7 @@ const Orders = () => {
                           Payment Method
                         </th>
                         <th className="px-6 py-3 text-xs  leading-4 tracking-wider text-left text-black font-bold uppercase border-b border-gray-200 bg-gray-50">
-                          Payment Status
+                          Payment Date
                         </th>
                         <th className="px-6 py-3 text-xs  leading-4 tracking-wider text-left text-black font-bold uppercase border-b border-gray-200 bg-gray-50">
                           Items Price
@@ -87,7 +87,7 @@ const Orders = () => {
                                   : 'text-red-800 bg-red-100'
                               } rounded-full`}>
                               {order.isPaid
-                                ? `Paid at ${new Date(
+                                ? `${new Date(
                                     order.paidAt
                                   ).toLocaleDateString()}`
                                 : 'Not paid'}

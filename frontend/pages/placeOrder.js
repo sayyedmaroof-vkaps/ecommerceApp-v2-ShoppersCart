@@ -193,6 +193,18 @@ const PlaceOrder = () => {
               </ListItem>
             </List>
           </Card>
+
+          <List>
+            <ListItem>
+              <Button
+                fullWidth
+                type="button"
+                variant="contained"
+                onClick={() => router.push('/payment')}>
+                Back To Payment Method
+              </Button>
+            </ListItem>
+          </List>
         </Grid>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>

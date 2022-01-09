@@ -33,11 +33,11 @@ function MyApp({ Component, pageProps }) {
             <CategoryState>
               <ProductState>
                 <OrderState>
-                  <Layout>
-                    <PayPalScriptProvider deferLoading={true}>
+                  <PayPalScriptProvider deferLoading={true}>
+                    <Layout>
                       <Component {...pageProps} />
-                    </PayPalScriptProvider>
-                  </Layout>
+                    </Layout>
+                  </PayPalScriptProvider>
                 </OrderState>
               </ProductState>
             </CategoryState>

@@ -72,9 +72,13 @@ const AddProduct = () => {
             <Counts />
             <div className="flex flex-col mt-8">
               <div className="py-2 -my-2 overflow-x-auto  sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                <h3 className="text-2xl text-black font-bold">Add Product</h3>
+                <h3 className="text-2xl text-black font-bold">
+                  Add New Product
+                </h3>
                 <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-700 shadow sm:rounded-lg">
-                  <form className="min-w-full my-4" onSubmit={handleAddProduct}>
+                  <form
+                    className="min-w-full px-4 my-4"
+                    onSubmit={handleAddProduct}>
                     <div className="md:flex md:items-center mb-6">
                       <div className="md:w-1/3">
                         <label
