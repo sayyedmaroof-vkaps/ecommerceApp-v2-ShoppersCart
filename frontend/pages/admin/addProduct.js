@@ -69,7 +69,6 @@ const AddProduct = () => {
         <Nav activeScreen="addProduct" />
         <div className="w-full px-4 py-2 bg-gray-200 lg:w-full">
           <div className="container mx-auto mt-12">
-            <Counts />
             <div className="flex flex-col mt-8">
               <div className="py-2 -my-2 overflow-x-auto  sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <h3 className="text-2xl text-black font-bold">

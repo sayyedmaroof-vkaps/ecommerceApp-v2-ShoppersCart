@@ -80,7 +80,7 @@ const CategoryState = props => {
   const getOneCategory = async id => {
     try {
       const { data } = await axios.get(`/api/category/${id}`)
-      return data.categories
+      return data.category
     } catch (err) {
       errorHandler(err)
     }
@@ -93,7 +93,7 @@ const CategoryState = props => {
       const headers = {
         Authorization: `Bearer ${userToken && userToken}`,
       }
-      await axios.patch(`api/category/${id}`, { title }, { headers })
+      await axios.patch(`/api/category/${id}`, { title }, { headers })
       enqueueSnackbar(`Category Updaated successfully with title ${title}`, {
         variant: 'success',
       })

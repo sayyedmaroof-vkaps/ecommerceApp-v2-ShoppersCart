@@ -267,7 +267,7 @@ const ProductDetails = ({ params }) => {
                 <label
                   className="block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
                   htmlFor="inline-full-name">
-                  Select New Image:
+                  Select Image:
                 </label>
               </div>
               <div className="md:w-2/3">
@@ -285,7 +285,7 @@ const ProductDetails = ({ params }) => {
               <button
                 disabled={!imageFile}
                 onClick={handleUpdateImage}
-                className="shadow mx-auto bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                className="shadow mx-auto bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded disabled:bg-purple-300">
                 Update Image
               </button>
             </div>
