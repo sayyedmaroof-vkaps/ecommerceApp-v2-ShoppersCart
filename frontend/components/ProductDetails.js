@@ -41,26 +41,21 @@ const ProductDetails = ({ product }) => {
               </Typography>
             </ListItem>
             <ListItem>
-              <Typography>
-                Category:{' '}
-                <Chip
-                  label={product.category.title}
-                  color="primary"
-                  variant="default"
-                  size="small"
-                  className={classes.chipStyle}
-                />
-              </Typography>
+              <Typography>Category: </Typography>
+              <Chip
+                label={product.category.title}
+                color="primary"
+                variant="default"
+                size="small"
+                className={classes.chipStyle}
+              />
             </ListItem>
             <ListItem>
-              <Typography>
-                Brand: <Chip label={product.brand} />
-              </Typography>
+              <Typography>Brand:</Typography>
+              <Chip label={product.brand} />
             </ListItem>
             <ListItem>
-              <Typography>
-                <Rating value={product.rating} text={product.numReviews} />
-              </Typography>
+              <Rating value={product.rating} text={product.numReviews} />
             </ListItem>
             <ListItem>
               <Typography>

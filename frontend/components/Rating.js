@@ -1,4 +1,4 @@
-import { Star, StarHalf } from '@material-ui/icons'
+import { Star, StarBorderOutlined, StarHalf } from '@material-ui/icons'
 
 const Rating = ({ value, text, color }) => {
   return (
@@ -9,7 +9,7 @@ const Rating = ({ value, text, color }) => {
         ) : value >= 0.5 ? (
           <StarHalf style={{ color }} />
         ) : (
-          <Star style={{ color }} />
+          <StarBorderOutlined style={{ color }} />
         )}
       </span>
       <span>
@@ -18,7 +18,7 @@ const Rating = ({ value, text, color }) => {
         ) : value >= 1.5 ? (
           <StarHalf style={{ color }} />
         ) : (
-          <Star style={{ color }} />
+          <StarBorderOutlined style={{ color }} />
         )}
       </span>
       <span>
@@ -27,7 +27,7 @@ const Rating = ({ value, text, color }) => {
         ) : value >= 2.5 ? (
           <StarHalf style={{ color }} />
         ) : (
-          <Star style={{ color }} />
+          <StarBorderOutlined style={{ color }} />
         )}
       </span>
       <span>
@@ -36,7 +36,7 @@ const Rating = ({ value, text, color }) => {
         ) : value >= 3.5 ? (
           <StarHalf style={{ color }} />
         ) : (
-          <Star style={{ color }} />
+          <StarBorderOutlined style={{ color }} />
         )}
       </span>
       <span>
@@ -45,7 +45,7 @@ const Rating = ({ value, text, color }) => {
         ) : value >= 4.5 ? (
           <StarHalf style={{ color }} />
         ) : (
-          <Star style={{ color }} />
+          <StarBorderOutlined style={{ color }} />
         )}
       </span>
       <span>{text && text > 0 ? `(${text})` : ''}</span>

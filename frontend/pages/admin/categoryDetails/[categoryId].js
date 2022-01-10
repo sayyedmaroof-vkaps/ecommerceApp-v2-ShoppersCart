@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
+import Meta from '../../../components/Meta'
 import CategoryContext from '../../../context/category/categoryContext'
 import UserContext from '../../../context/user/UserContext'
 
@@ -40,6 +41,7 @@ const CategoryDetails = ({ params }) => {
 
   return (
     <div>
+      <Meta title="Admin Dashboard" />
       <Link href="/admin">
         <a className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded d-inline">
           Back to Dashboard
@@ -48,7 +50,7 @@ const CategoryDetails = ({ params }) => {
       <div className="flex flex-col mt-8">
         <div className="flex items-center justify-center">
           <div className="w-2/3 px-4 py-2 bg-gray-200 ">
-            <h3 className="text-2xl text-black font-bold">Product Details</h3>
+            <h3 className="text-2xl text-black font-bold">Category Details</h3>
             <div className="inline-block  min-w-full overflow-hidden align-middle border-b border-gray-700 shadow sm:rounded-lg">
               <form
                 className="min-w-full px-3 my-4"

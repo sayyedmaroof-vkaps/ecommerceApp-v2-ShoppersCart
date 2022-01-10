@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { Fragment, useContext, useEffect, useState } from 'react'
+import Meta from '../../../components/Meta'
 import CategoryContext from '../../../context/category/categoryContext'
 import ProductContext from '../../../context/product/productContext'
 import UserContext from '../../../context/user/UserContext'
@@ -39,7 +40,6 @@ const ProductDetails = ({ params }) => {
     }
     const fetchProduct = async () => {
       const fetchedProduct = await getOneProduct(productId)
-      // console.log(fetchedProduct)
       setProduct(fetchedProduct)
       setImage(fetchedProduct.image)
     }
@@ -84,6 +84,7 @@ const ProductDetails = ({ params }) => {
 
   return (
     <Fragment>
+      <Meta title="Admin Dashboard" />
       <Link href="/admin">
         <a className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded d-inline">
           Back to Dashboard
@@ -230,6 +231,7 @@ const ProductDetails = ({ params }) => {
                   </div>
                   <div className="md:w-2/3">
                     <textarea
+                      rows={6}
                       className="bg-gray-200 appearance-none border-2 border-gray-700 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                       id="inline-full-name"
                       name="description"

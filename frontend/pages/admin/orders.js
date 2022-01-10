@@ -6,6 +6,7 @@ import UserContext from '../../context/user/UserContext'
 import NextLink from 'next/link'
 import Counts from '../../adminComponents/Counts'
 import Nav from '../../adminComponents/Nav'
+import Link from 'next/link'
 
 const Orders = () => {
   const router = useRouter()
@@ -105,9 +106,13 @@ const Orders = () => {
                           </td>
                           <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                             <div className="text-sm leading-5 text-gray-900">
-                              <button className="border-gray-400 text-black border-2 rounded-md p-1 hover:bg-slate-600">
-                                Details
-                              </button>
+                              <Link
+                                href={`/admin/orderDetails/${order._id}`}
+                                passHref>
+                                <button className="border-gray-400 text-black border-2 rounded-md p-1 px-2 hover:bg-slate-600">
+                                  Details
+                                </button>
+                              </Link>
                             </div>
                           </td>
                         </tr>

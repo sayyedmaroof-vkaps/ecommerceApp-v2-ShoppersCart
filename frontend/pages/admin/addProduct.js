@@ -210,6 +210,7 @@ const AddProduct = () => {
                       </div>
                       <div className="md:w-2/3">
                         <textarea
+                          rows={6}
                           className="bg-gray-200 appearance-none border-2 border-gray-700 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                           id="inline-full-name"
                           name="description"
@@ -235,7 +236,7 @@ const AddProduct = () => {
                           onChange={e => setImage(e.target.files[0])}
                         />
                         <p className="text-xs text-gray-500">
-                          PNG, JPG, GIF up to 10MB
+                          PNG, JPG, GIF up to 3MB
                         </p>
                       </div>
                     </div>
