@@ -4,7 +4,6 @@ import Meta from '../../components/Meta'
 import UserContext from '../../context/user/UserContext'
 import ProductContext from '../../context/product/productContext'
 import CategoryContext from '../../context/category/categoryContext'
-import NextLink from 'next/link'
 import Counts from '../../adminComponents/Counts'
 import Nav from '../../adminComponents/Nav'
 import Link from 'next/link'
@@ -144,7 +143,7 @@ const Prodcuts = () => {
                     <thead>
                       <tr>
                         <th className="px-6 py-3 text-xs  leading-4 tracking-wider text-left text-black font-bold uppercase border-b border-gray-200 bg-gray-50">
-                          Id
+                          Image
                         </th>
                         <th className="px-6 py-3 text-xs  leading-4 tracking-wider text-left text-black font-bold uppercase border-b border-gray-200 bg-gray-50">
                           Name
@@ -168,9 +167,11 @@ const Prodcuts = () => {
                       {products.map(product => (
                         <tr key={product._id}>
                           <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            <div className="text-xs leading-5 font-semibold text-gray-600">
-                              {product._id.substring(20, 24)}
-                            </div>
+                            <img
+                              src={product.image}
+                              width={60}
+                              className="rounded-full "
+                            />
                           </td>
                           <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                             <div className="text-sm leading-5 text-gray-900 font-bold">

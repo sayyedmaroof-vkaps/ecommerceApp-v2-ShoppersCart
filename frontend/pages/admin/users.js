@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import { useContext, useEffect } from 'react'
 import Meta from '../../components/Meta'
 import UserContext from '../../context/user/UserContext'
-import NextLink from 'next/link'
 import Counts from '../../adminComponents/Counts'
 import Nav from '../../adminComponents/Nav'
 
@@ -49,10 +48,6 @@ const Users = () => {
                         <th className="px-6 py-3 text-xs  leading-4 tracking-wider text-left text-black font-bold uppercase border-b border-gray-200 bg-gray-50">
                           Joining Date
                         </th>
-
-                        <th className="px-6 py-3 text-xs  leading-4 tracking-wider text-left text-black font-bold uppercase border-b border-gray-200 bg-gray-50">
-                          Action
-                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white">
@@ -86,14 +81,6 @@ const Users = () => {
                           <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                             <div className="text-sm leading-5 text-gray-500">
                               {new Date(user.createdAt).toLocaleString()}
-                            </div>
-                          </td>
-
-                          <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
-                            <div className="text-sm leading-5 text-gray-900">
-                              <button className="border-gray-400 text-black border-2 rounded-md p-1 px-2 hover:bg-slate-600">
-                                Details
-                              </button>
                             </div>
                           </td>
                         </tr>

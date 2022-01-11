@@ -69,7 +69,7 @@ export const deleteProfile = async (req, res) => {
 }
 
 // @desc Get all users
-// @route DELETE '/api/users/profile'
+// @route GET '/api/users/getAll'
 // @access Private: Admin
 export const getAllUsers = async (req, res) => {
   try {
