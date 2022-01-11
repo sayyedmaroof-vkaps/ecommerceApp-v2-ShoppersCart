@@ -51,6 +51,12 @@ const useStyles = makeStyles({
     margin: 0,
     padding: 0,
   },
+  filterDropdown: {
+    minWidth: '150px',
+  },
+  searchBtn: {
+    margin: '0 5px',
+  },
 })
 
 export default useStyles

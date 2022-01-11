@@ -7,13 +7,20 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   Typography,
 } from '@material-ui/core'
 import { useCart } from 'react-use-cart'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import useStyles from '../utils/styles'
+import { useContext, useEffect, useState } from 'react'
+import CategoryContext from '../context/category/categoryContext'
+import ProductContext from '../context/product/productContext'
 
 const Products = ({ products }) => {
   const classes = useStyles()
@@ -23,9 +30,6 @@ const Products = ({ products }) => {
 
   return (
     <>
-      <Typography variant="h1" element="h1">
-        Products
-      </Typography>
       <Grid container spacing={3}>
         {products.map(product => (
           <Grid item md={4} key={product.name}>
